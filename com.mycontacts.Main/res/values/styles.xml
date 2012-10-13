@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+	<style name="SplashTheme">
+	    <item name="android:background">@drawable/spashscreenimage</item>
+	    <item name="android:windowNoTitle">true</item>
+	</style>
+    
+</resources>

@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#202830"
+    tools:context=".Main" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/AppName"
+        android:textColor="#F7F7F8"
+        android:textSize="45sp"
+        tools:context=".Main"
+        android:id="@+id/tvAppName" >        
+    </TextView>
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLine"
+        android:layout_centerHorizontal="true"
+        android:background="#50555A"
+        android:onClick="viewContact"
+        android:overScrollMode="always"
+        android:padding="5dp"
+        android:text="Scan"
+        android:textColor="#00A8C0"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/tvLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAppName"
+        android:layout_centerHorizontal="true"
+        android:text="Get the Lucky Contacts"
+        android:textColor="#F7F7F8"
+        android:textSize="22sp" />
+
+</RelativeLayout>

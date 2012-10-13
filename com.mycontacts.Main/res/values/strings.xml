@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">MagicContacts</string>
+    <string name="AppName">Magic Contacts</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MagicContacts</string>
+
+</resources>
