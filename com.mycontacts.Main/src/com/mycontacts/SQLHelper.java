@@ -23,24 +23,22 @@ public class SQLHelper extends SQLiteOpenHelper{
 	static final String col_Hid="id";//id int autoincrement,c_no , c_name, status
 	static final String col_lastScanned_Date="lastScanned_Date";
 	
-	
-	
 	public SQLHelper(Context ctx)
 	{
-		super(ctx,dbName,null,33);						
+		super(ctx,dbName,null,1);						
 	}
 	
 			@Override
 		public void onCreate(SQLiteDatabase db) {			
-		try{
-			db.execSQL("CREATE TABLE"+TableMyContacts+
+		try{			
+			db.execSQL("CREATE TABLE IF NOT EXISTS "+TableMyContacts+
 					"("+col_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+col_c_name+" VARCHAR,"
 					+col_c_no+" VARCHAR,"
 					+col_status+" INTEGER);");
-			db.execSQL("CREATE TABLE"+TableHistory+
-					"("+col_Hid+" INTEGER,"
-					+col_lastScanned_Date+" TIMESTAMP);");
+			//db.execSQL("CREATE TABLE"+TableHistory+
+			//		"("+col_Hid+" INTEGER,"
+			//		+col_lastScanned_Date+" TIMESTAMP);");
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
@@ -51,16 +49,16 @@ public class SQLHelper extends SQLiteOpenHelper{
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			
 			db.execSQL("DROP TABLE if Exists "+TableMyContacts);
-			db.execSQL("DROP TABLE if Exists "+TableHistory);
+		//	db.execSQL("DROP TABLE if Exists "+TableHistory);
 			onCreate(db);
 		}
 
 	public long insertNumber(String c_name,String c_no,int Status)
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
-		ContentValues initialvalues= new ContentValues();
-		initialvalues.put(col_c_no,c_no);		
+		ContentValues initialvalues= new ContentValues();				
 		initialvalues.put(col_c_name,c_name);
+		initialvalues.put(col_c_no,c_no);
 		initialvalues.put(col_status,Status);
 		return db.insert(TableMyContacts, null, initialvalues);
 	}
@@ -74,18 +72,18 @@ public class SQLHelper extends SQLiteOpenHelper{
 		return db.insert(TableHistory, null, initialvalues);
 	}
 	
-	public boolean activeContact(int id,String status)
+	public boolean activeContact(int id)
+	{
+		SQLiteDatabase db=this.getWritableDatabase();
+		ContentValues initialvalues=new ContentValues();
+		initialvalues.put(col_status,1);
+		return db.update(TableMyContacts,initialvalues,col_ID+"="+id,null)>0;
+	}
+	public boolean disableContact(int id)
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
 		ContentValues initialvalues=new ContentValues();
 		initialvalues.put(col_status,0);
-		return db.update(TableMyContacts,initialvalues,col_ID+"="+id,null)>0;
-	}
-	public boolean disableContact(int id,int status)
-	{
-		SQLiteDatabase db=this.getWritableDatabase();
-		ContentValues initialvalues=new ContentValues();
-		initialvalues.put(col_status,status);
 		return db.update(TableMyContacts,initialvalues,col_ID+"="+id,null)>0;
 	}
 	public boolean updateHistory(int id,Date date)
