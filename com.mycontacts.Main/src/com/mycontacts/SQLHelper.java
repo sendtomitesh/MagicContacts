@@ -101,7 +101,8 @@ public class SQLHelper extends SQLiteOpenHelper{
 	public Cursor getAllContacts()
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
-		return db.rawQuery("select "+col_ID+" _id,"+col_c_name+","+col_c_no+" from " +TableMyContacts,null);		
+		//return db.rawQuery("select "+col_ID+" _id,"+col_c_name+","+col_c_no+" from " +TableMyContacts,null);
+		return db.rawQuery("select id _id, c_name, c_no from MyContacts", null);
 	}
 	public Cursor getRandomContact(int Status)
 	{

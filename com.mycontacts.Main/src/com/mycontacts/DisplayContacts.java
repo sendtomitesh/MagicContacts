@@ -53,7 +53,7 @@ public class DisplayContacts extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.displaycontacts);
+        setContentView(R.layout.contact_list);
         try{
         	String destpath = "/data/data/" + getPackageName()
 					+ "/databases/dbContacts";
@@ -148,8 +148,12 @@ public class DisplayContacts extends Activity {
         Log.e("hi",c1.getCount()+"");
         
         final ListView listView1= (ListView)findViewById(R.id.listView1);
-        
-        adapter = new SimpleCursorAdapter(this,R.layout.contactslist,c1,new String[] {"_id","c_name","c_no"},new int[] {R.id.checkBox1,R.id.textView11,R.id.textView12});        
+        adapter = new SimpleCursorAdapter(this,
+        		R.layout.contact_list_item,
+        		c1,
+        		new String[] {"_id","c_name","c_no"},
+        		new int[] {R.id.checkBox1,R.id.txt_name,R.id.txt_number}
+        );        
         listView1.setAdapter(adapter);
         c1.close();
         Log.e("hi","c1 close");
