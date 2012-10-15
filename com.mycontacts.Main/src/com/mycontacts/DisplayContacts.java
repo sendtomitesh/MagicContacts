@@ -38,7 +38,7 @@ public class DisplayContacts extends Activity {
     public ArrayList<Boolean> itemChecked = null;
     
     final boolean tempvar=false;
-    int k=0;
+    int k=2;
    String d=null;
     ArrayAdapter<String> myAdapterInstance;
     SimpleCursorAdapter adapter;
@@ -49,7 +49,8 @@ public class DisplayContacts extends Activity {
     };
 	
 	
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.displaycontacts);
@@ -109,7 +110,7 @@ public class DisplayContacts extends Activity {
 	        	id[i]=c.getInt(0);
 	        	name[i]=c.getString(1);
 	        	number[i]=c.getString(2);
-	        	Log.e("hi", id+" "+name[i]+" "+number[i]);
+	        	Log.e("hi", id[i]+" "+name[i]+" "+number[i]);
 	        	//insert this records into database;
 	        	Log.e("hi", "after log e");
 	        	con.insertNumber(name[i],number[i], 1);	        	
@@ -140,14 +141,18 @@ public class DisplayContacts extends Activity {
         else if(k==2)
         {
         	//if app run before 10 days then just display the active contacts(status=1)
-        	
+        	Log.e("hi",k+" in k");
         }
         	
         Cursor c1=con.getAllContacts();
+        Log.e("hi",c1.getCount()+"");
+        
         final ListView listView1= (ListView)findViewById(R.id.listView1);
-        adapter = new SimpleCursorAdapter(this,R.layout.contactslist,c1,new String[] {"c_name","c_no","_id"},new int[] {R.id.textView11,R.id.textView12,R.id.checkBox1});        
+        
+        adapter = new SimpleCursorAdapter(this,R.layout.contactslist,c1,new String[] {"_id","c_name","c_no"},new int[] {R.id.checkBox1,R.id.textView11,R.id.textView12});        
         listView1.setAdapter(adapter);
         c1.close();
+        Log.e("hi","c1 close");
 	}
     	
         private void copyDB(InputStream inputStream, OutputStream outputStream)
