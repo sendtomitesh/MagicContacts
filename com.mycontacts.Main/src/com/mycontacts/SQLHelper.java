@@ -1,6 +1,7 @@
 package com.mycontacts;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import android.R.bool;
 import android.content.ContentValues;
@@ -20,22 +21,41 @@ public class SQLHelper extends SQLiteOpenHelper{
 	static final String col_status="status";
 	
 	static final String TableHistory="ScanHistory";
-	static final String col_Hid="id";//id int autoincrement,c_no , c_name, status
-	static final String col_lastScanned_Date="lastScanned_Date";
-	
+	static final String col_Hid="_id";//id int autoincrement,c_no , c_name, status
+	static final String col_lsd="lastScanedDay";
+	static final String col_lsm="lastScanedMonth";
+	static final String col_lsy="lastScanedYear";
 	public SQLHelper(Context ctx)
 	{
-		super(ctx,dbName,null,1);						
+		super(ctx,dbName,null,1);
+		this.getReadableDatabase();
 	}
 	
 			@Override
 		public void onCreate(SQLiteDatabase db) {			
-		try{			
-			db.execSQL("CREATE TABLE IF NOT EXISTS "+TableMyContacts+
+		try{
+			
+            
+			String str1="CREATE TABLE IF NOT EXISTS "+TableMyContacts+
 					"("+col_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+col_c_name+" VARCHAR,"
 					+col_c_no+" VARCHAR,"
-					+col_status+" INTEGER);");
+					+col_status+" INTEGER);";
+			
+			String str2="CREATE TABLE IF NOT EXISTS "+TableHistory+
+					"("+col_Hid+" INTEGER,"
+					+col_lsd+" INTEGER,"
+					+col_lsm+" INTEGER, "
+					+col_lsy+" INTEGER);";
+			
+			
+			
+			String str[]=new String[]{str1,str2};
+			for(String sql : str)
+			{
+				db.execSQL(sql);
+			}
+
 			
 		}catch(SQLException e)
 		{
@@ -61,13 +81,21 @@ public class SQLHelper extends SQLiteOpenHelper{
 		return db.insert(TableMyContacts, null, initialvalues);
 	}
 	
-	public long insertHistory(int id,Date date)
+	public long insertHistory()
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
-		ContentValues initialvalues= new ContentValues();
-		initialvalues.put(col_Hid,id);		
-		initialvalues.put(col_lastScanned_Date,date.toString());
+		Calendar calendar=Calendar.getInstance();
+		ContentValues initialvalues= new ContentValues();				
+		initialvalues.put(col_Hid,1);
+		
+		initialvalues.put(col_lsd,calendar.get(Calendar.DAY_OF_MONTH));
+		initialvalues.put(col_lsm,calendar.get(Calendar.MONTH));
+		initialvalues.put(col_lsy,calendar.get(Calendar.YEAR));
+		
 		return db.insert(TableHistory, null, initialvalues);
+		
+		
+		
 	}
 	
 	public boolean activeContact(int id)
@@ -88,7 +116,7 @@ public class SQLHelper extends SQLiteOpenHelper{
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
 		ContentValues initialvalues=new ContentValues();
-		initialvalues.put(col_lastScanned_Date,date.toString());		
+	//	initialvalues.put(col_lastScanned_Date,date.toString());		
 		return db.update(TableMyContacts,initialvalues,col_Hid+"="+id,null)>0;
 	}
 	public boolean deleteHistory(long id)
@@ -102,6 +130,14 @@ public class SQLHelper extends SQLiteOpenHelper{
 		//return db.rawQuery("select "+col_ID+" _id,"+col_c_name+","+col_c_no+" from " +TableMyContacts,null);
 		return db.rawQuery("select id _id, c_name, c_no from MyContacts", null);
 	}
+	public boolean isDataExist()
+	{
+		
+		if (getAllContacts().getCount()>0)return true;
+		else return false;
+		
+		
+	}
 	public Cursor getRandomContact(int Status)
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
@@ -109,8 +145,18 @@ public class SQLHelper extends SQLiteOpenHelper{
 	}
 	public Cursor getHistoryDate()
 	{
+		Cursor c;
+		try
+		{
 		SQLiteDatabase db=this.getWritableDatabase();
-		return db.rawQuery("select "+col_Hid+" _id,"+col_lastScanned_Date+" from " +TableHistory,null);	
+		c= db.rawQuery("select * from " +TableHistory,null);
+		}
+		catch(Exception e)
+		{
+			Log.e("error","error in history");
+			c= null;
+		}
+		return c;
 	}
 	
 }
