@@ -20,14 +20,14 @@ public final class R {
         public static final int spashscreenimage=0x7f020002;
     }
     public static final class id {
-        public static final int btnScan=0x7f050005;
-        public static final int checkBox1=0x7f050003;
-        public static final int listView1=0x7f050002;
+        public static final int btnScan=0x7f050006;
+        public static final int checkBox1=0x7f050004;
+        public static final int listView1=0x7f050003;
         public static final int menu_settings=0x7f050009;
         public static final int progressBar1=0x7f050008;
-        public static final int textView1=0x7f050007;
-        public static final int tvAppName=0x7f050004;
-        public static final int tvLine=0x7f050006;
+        public static final int textView1=0x7f050002;
+        public static final int tvAppName=0x7f050005;
+        public static final int tvLine=0x7f050007;
         public static final int txt_name=0x7f050000;
         public static final int txt_number=0x7f050001;
     }
