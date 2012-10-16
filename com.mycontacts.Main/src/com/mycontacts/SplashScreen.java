@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 public class SplashScreen extends Activity {
 
@@ -13,9 +14,11 @@ public class SplashScreen extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		setContentView(R.layout.splashscreen);
+		final ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+		pb.setMax(50);
+		pb.setProgress(0);
 		Thread splashThread = new Thread()
 		{
 			@Override
@@ -29,6 +32,7 @@ public class SplashScreen extends Activity {
 							//Five second timer
 							sleep(100);
 							waited += 100;
+							pb.setProgress(waited/100);
 						}
 				}catch(InterruptedException e)
 				{ //Any errors that might occur
@@ -37,10 +41,9 @@ public class SplashScreen extends Activity {
 				finally
 				{
 					finish();
-					Intent ide = new Intent();
-					ide.setClassName("com.mycontacts",
-							"com.mycontacts.DisplayContacts");
-					startActivity(ide);
+					Intent myIntent= new Intent(getApplicationContext(),DisplayContacts.class);
+			    	startActivity(myIntent);
+					
 				}
 			}
 		};

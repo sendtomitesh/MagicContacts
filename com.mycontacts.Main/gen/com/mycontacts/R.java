@@ -23,8 +23,9 @@ public final class R {
         public static final int btnScan=0x7f050005;
         public static final int checkBox1=0x7f050003;
         public static final int listView1=0x7f050002;
-        public static final int menu_settings=0x7f050008;
-        public static final int progressBar1=0x7f050007;
+        public static final int menu_settings=0x7f050009;
+        public static final int progressBar1=0x7f050008;
+        public static final int textView1=0x7f050007;
         public static final int tvAppName=0x7f050004;
         public static final int tvLine=0x7f050006;
         public static final int txt_name=0x7f050000;
@@ -46,6 +47,7 @@ public final class R {
         public static final int display_contacts=0x7f060005;
         public static final int menu_settings=0x7f060002;
         public static final int name=0x7f060004;
+        public static final int splashScreenText=0x7f060007;
         public static final int title_activity_main=0x7f060003;
     }
     public static final class style {

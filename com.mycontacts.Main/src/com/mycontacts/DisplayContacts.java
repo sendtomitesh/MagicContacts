@@ -54,19 +54,7 @@ public class DisplayContacts extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_list);
-        try{
-        	String destpath = "/data/data/" + getPackageName()
-					+ "/databases/dbContacts";
-			File f = new File(destpath);
-			if (!f.exists()) {
-				copyDB(getBaseContext().getAssets().open("dbContacts"),
-						new FileOutputStream(destpath));
-			}
-        } catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        
 		
 		SQLHelper con= new SQLHelper(this);
 		

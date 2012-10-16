@@ -36,9 +36,7 @@ public class SQLHelper extends SQLiteOpenHelper{
 					+col_c_name+" VARCHAR,"
 					+col_c_no+" VARCHAR,"
 					+col_status+" INTEGER);");
-			//db.execSQL("CREATE TABLE"+TableHistory+
-			//		"("+col_Hid+" INTEGER,"
-			//		+col_lastScanned_Date+" TIMESTAMP);");
+			
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
@@ -114,31 +112,5 @@ public class SQLHelper extends SQLiteOpenHelper{
 		SQLiteDatabase db=this.getWritableDatabase();
 		return db.rawQuery("select "+col_Hid+" _id,"+col_lastScanned_Date+" from " +TableHistory,null);	
 	}
-	/*public boolean updateRecord(long id,String classname,String subject)
-	{
-		ContentValues initialvalues= new ContentValues();		
-		initialvalues.put(KEY_CLASS,classname);
-		initialvalues.put(KEY_SUBJECT,subject);
-		return db.update(DATABASE_TABLE,initialvalues,KEY_ROWID+"="+id,null)>0;
-	}	
-	public boolean deleteRecord(long rowId)
-	{
-		return db.delete(DATABASE_TABLE, KEY_ROWID+"="+rowId,null)>0;		
-	}
-	
-	public Cursor getAllRecords()
-	{
-		return db.rawQuery("select id _id, classname,subject from classes",null);		
-	}
-	
-	public Cursor getRecord(long id)throws SQLException
-	{
-		Cursor mCursor=db.query(true,DATABASE_TABLE, new String[] {KEY_ROWID,KEY_CLASS,KEY_SUBJECT}, 	KEY_ROWID+"="+id, null, null, null, null,null);
-		if(mCursor!=null)
-		{
-			mCursor.moveToFirst();
-		}		
-		return mCursor;
-	}*/
 	
 }
