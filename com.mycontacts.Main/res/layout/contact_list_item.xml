@@ -13,14 +13,15 @@
         android:text="@string/name"
         android:textColor="#0088FF"
         android:textSize="17dp"/>
+
     <CheckBox
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="8dip"
         android:layout_alignParentTop="true"
-   />
+        android:layout_marginRight="8dip"
+        android:visibility="gone" />
 
     <TextView
         android:id="@id/txt_number"

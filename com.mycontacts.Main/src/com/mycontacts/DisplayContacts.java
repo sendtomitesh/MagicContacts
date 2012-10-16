@@ -1,37 +1,18 @@
 package com.mycontacts;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Random;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts.People;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.PhoneLookup;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.text.format.DateFormat;
-import android.text.method.DateTimeKeyListener;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
 
 public class DisplayContacts extends Activity {
@@ -73,12 +54,13 @@ public class DisplayContacts extends Activity {
 			dbHelp.insertHistory();
 			c.close();
 		} 
-		final ListView listView1 = (ListView) findViewById(R.id.listView1);
+		/*final ListView listView1 = (ListView) findViewById(R.id.listView1);
 		adapter = new SimpleCursorAdapter(this, R.layout.contact_list_item,
-					dbHelp.getAllContacts(), new String[] { "_id", "c_name",
+					dbHelp.getAllActiveContacts(), new String[] { "_id", "c_name",
 							"c_no" }, new int[] { R.id.checkBox1,
 							R.id.txt_name, R.id.txt_number });
-		listView1.setAdapter(adapter);
+		listView1.setAdapter(adapter);*/
+		
 		Cursor temp=dbHelp.getHistoryDate();
 		if (temp!=null)
 		{
@@ -88,18 +70,82 @@ public class DisplayContacts extends Activity {
 			temp.moveToFirst();
 			try
 			{
-			Log.e("error",""+temp.getInt(2));
+				
+				Calendar thatDay = Calendar.getInstance();
+				thatDay.set(Calendar.DAY_OF_MONTH,temp.getInt(1));//change this value to 1 for getting date difference 10.
+				thatDay.set(Calendar.MONTH,temp.getInt(2)); // 0-11 so 1 less
+				thatDay.set(Calendar.YEAR, temp.getInt(3));
+				 	 Calendar today = Calendar.getInstance();
+				 	 long diff = today.getTimeInMillis() - thatDay.getTimeInMillis(); 
+				 	 long days = diff / (24 * 60 * 60 * 1000);
+			 	  
+				 	 if(days >= 10)
+				 	 {
+				 	 Log.d("Days Diffe",""+ days);
+				 	 //make inactive all the contacts
+				 	 
+				 	 //choose last one contact to display
+					 //int id;
+			 		 //String contactno;
+			 		 //String contactname;
+					 	 Log.d("Else Days Diffe",""+ days);
+					 	 Cursor updateCursor=dbHelp.getAllContacts();
+					 	 updateCursor.moveToFirst();
+					 	 
+					 	 do
+						 {
+						 	 //id=;
+						 	 //contactname=updateCursor.getString(1);
+						 	 //contactno=updateCursor.getString(2);
+						 	 dbHelp.disableContact(updateCursor.getInt(0));
+						 }while(updateCursor.moveToNext());
+						 updateCursor.moveToLast();
+						 dbHelp.activeContact(updateCursor.getInt(0));
+						 
+						 //fetch one random contact from the phone and insert into db.
+						 
+						 c = getContentResolver().query(Phone.CONTENT_URI,
+									projection, null, null, Phone.DISPLAY_NAME + " ASC");
+							int size = c.getCount();
+							boolean numFound=false;
+							while(!numFound)
+							{
+								Random r1 = new Random();
+								int index = r1.nextInt(size);
+								c.moveToPosition(index);
+								//check into database
+								updateCursor.moveToFirst();
+								do
+								{
+									if(updateCursor.getString(2)!=c.getString(2))
+									{
+										dbHelp.insertNumber(c.getString(1), c.getString(2), 1);
+										numFound=true;
+										break;
+									}									
+								}while(updateCursor.moveToNext());							
+							}
+							dbHelp.updateHistory();
+							c.close(); 
+					 }
 			}
 			catch(Exception e)
 			{
 				Log.e("error",""+"Danger Error");
 			}
+			final ListView listView1 = (ListView) findViewById(R.id.listView1);
+			adapter = new SimpleCursorAdapter(this, R.layout.contact_list_item,
+						dbHelp.getAllActiveContacts(), new String[] { "_id", "c_name",
+								"c_no" }, new int[] { R.id.checkBox1,
+								R.id.txt_name, R.id.txt_number });
+			listView1.setAdapter(adapter);
 			}
+
 		}
 	}
 
 	// Log.e("hi","c1 close");
-	// }
+}
 	//
 
-}
+

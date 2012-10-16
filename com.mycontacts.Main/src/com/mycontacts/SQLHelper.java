@@ -92,10 +92,7 @@ public class SQLHelper extends SQLiteOpenHelper{
 		initialvalues.put(col_lsm,calendar.get(Calendar.MONTH));
 		initialvalues.put(col_lsy,calendar.get(Calendar.YEAR));
 		
-		return db.insert(TableHistory, null, initialvalues);
-		
-		
-		
+		return db.insert(TableHistory, null, initialvalues);		
 	}
 	
 	public boolean activeContact(int id)
@@ -112,12 +109,16 @@ public class SQLHelper extends SQLiteOpenHelper{
 		initialvalues.put(col_status,0);
 		return db.update(TableMyContacts,initialvalues,col_ID+"="+id,null)>0;
 	}
-	public boolean updateHistory(int id,Date date)
+	public boolean updateHistory()
 	{
 		SQLiteDatabase db=this.getWritableDatabase();
-		ContentValues initialvalues=new ContentValues();
-	//	initialvalues.put(col_lastScanned_Date,date.toString());		
-		return db.update(TableMyContacts,initialvalues,col_Hid+"="+id,null)>0;
+		Calendar calendar=Calendar.getInstance();
+		ContentValues initialvalues= new ContentValues();				
+		initialvalues.put(col_lsd,calendar.get(Calendar.DAY_OF_MONTH));
+		initialvalues.put(col_lsm,calendar.get(Calendar.MONTH));
+		initialvalues.put(col_lsy,calendar.get(Calendar.YEAR));	
+				
+		return db.update(TableHistory,initialvalues,col_Hid+"="+1,null)>0;
 	}
 	public boolean deleteHistory(long id)
 	{
@@ -129,6 +130,12 @@ public class SQLHelper extends SQLiteOpenHelper{
 		SQLiteDatabase db=this.getWritableDatabase();
 		//return db.rawQuery("select "+col_ID+" _id,"+col_c_name+","+col_c_no+" from " +TableMyContacts,null);
 		return db.rawQuery("select id _id, c_name, c_no from MyContacts", null);
+	}
+	public Cursor getAllActiveContacts()
+	{
+		SQLiteDatabase db=this.getWritableDatabase();
+		//return db.rawQuery("select "+col_ID+" _id,"+col_c_name+","+col_c_no+" from " +TableMyContacts,null);
+		return db.rawQuery("select id _id, c_name, c_no from MyContacts where status=1", null);
 	}
 	public boolean isDataExist()
 	{
